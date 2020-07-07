@@ -1,13 +1,9 @@
-Cloudstate Gatling Loadtest example
-===================================
-
-# What is this?
-
-This is a sample of using [Gatling](https://gatling.io/) to run a load test against Cloudstate services. [Cloudstate](https://cloudstate.io/) is a specification, protocol, and reference implementation for providing distributed state management patterns suitable for Serverless computing.
+Cloudstate shopping cart example loadtest
+=========================================
 
 # Getting started
 
-If you deploy the sample shopping cart [js-shopping-cart](https://github.com/cloudstateio/cloudstate/tree/master/samples/js-shopping-cart) you can use this repository to run a load test against it, that tests various functions. 
+This project allows you to run a load test against the Cloudstate shopping cart example.
 
 # Running the shopping cart load test
 
