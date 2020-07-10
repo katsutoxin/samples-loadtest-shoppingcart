@@ -81,11 +81,18 @@ class ShoppingCartSimulation1 extends Simulation {
 
 object ShoppingCartRunner {
   def main(args: Array[String]) {
+
+    val noReportsSetting = scala.util.Properties.envOrElse("NO_REPORTS", "false")
+    val noReports: Boolean = Try(noReportsSetting.toBoolean).getOrElse(false)
+
     // This sets the class for the simulation we want to run.
     val simClass = classOf[ShoppingCartSimulation1].getName
     val props = new GatlingPropertiesBuilder
     props.binariesDirectory("./target/scala-2.12/classes")
-    props.simulationClass(simClass)
+      .simulationClass(simClass)
+
+    if(noReports) props.noReports()
+
     Gatling.fromMap(props.build)
   }
 }
