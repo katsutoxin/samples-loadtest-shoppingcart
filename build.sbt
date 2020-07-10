@@ -12,7 +12,18 @@ val gatlingVersion = "3.3.1"
 
 // Docker settings
 
-defaultLinuxInstallLocation in Docker := "/opt/docker"
+dockerExposedPorts in Docker := Seq.empty
+
+import com.typesafe.sbt.packager.docker._
+
+dockerCommands ++= Seq(
+  Cmd("User", "root"),
+  ExecCmd("RUN", "mkdir", "-p", "/opt/docker/results"),
+  ExecCmd("RUN",
+    "chmod", "777",
+     "/opt/docker/results"),
+  Cmd("USER", "1001:0")
+)
 
 // Libraries
 

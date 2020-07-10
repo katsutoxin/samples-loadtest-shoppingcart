@@ -76,17 +76,15 @@ class ShoppingCartSimulation1 extends Simulation {
       )
     }
 
-  setUp(scn.inject(rampUsers(numUsers) during (30 seconds)).protocols(grpcConf)).assertions(
-    global.responseTime.max.lt(50),
-    global.successfulRequests.percent.gte(100.0)
-  )
+  setUp(scn.inject(rampUsers(numUsers) during (30 seconds)).protocols(grpcConf))
+    .assertions(
+      global.responseTime.max.lt(2000),
+      global.successfulRequests.percent.gte(100.0)
+    )
 }
 
 object ShoppingCartRunner {
   def main(args: Array[String]) {
-
-    val noReportsSetting = scala.util.Properties.envOrElse("NO_REPORTS", "false")
-    val noReports: Boolean = Try(noReportsSetting.toBoolean).getOrElse(false)
 
     // This sets the class for the simulation we want to run.
     val simClass = classOf[ShoppingCartSimulation1].getName
@@ -94,10 +92,15 @@ object ShoppingCartRunner {
     props.binariesDirectory("./target/scala-2.12/classes")
       .simulationClass(simClass)
 
-    if(noReports) props.noReports()
+    println(s"🛒🛒🛒 Testing Shopping cart 🛒🛒🛒")
 
     val response = Gatling.fromMap(props.build)
-    println(s"exit with response code: $response")
+
+    if(response == 0)
+      println("Test completed successfully ✅")
+    else
+      println("Tests completed unsuccessfully ❌")
+
     System.exit(response)
   }
 }
