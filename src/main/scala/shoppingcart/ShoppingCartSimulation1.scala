@@ -32,7 +32,7 @@ class ShoppingCartSimulation1 extends Simulation {
   val host = scala.util.Properties.envOrElse("GATLING_HOST", "localhost")
   val portString = scala.util.Properties.envOrElse("GATLING_PORT", "9000")
   val port = Try(portString.toInt).getOrElse(9000)
-  val numUsersString = scala.util.Properties.envOrElse("GATLING_NUM_USERS", "10")
+  val numUsersString = scala.util.Properties.envOrElse("GATLING_NUM_USERS", "1")
   val numUsers = Try(numUsersString.toInt).getOrElse(10)
 
   val grpcConf = grpc(ManagedChannelBuilder.forAddress(host, port).usePlaintext())
@@ -77,15 +77,30 @@ class ShoppingCartSimulation1 extends Simulation {
     }
 
   setUp(scn.inject(rampUsers(numUsers) during (30 seconds)).protocols(grpcConf))
+    .assertions(
+      global.responseTime.max.lt(2000),
+      global.successfulRequests.percent.gte(100.0)
+    )
 }
 
 object ShoppingCartRunner {
   def main(args: Array[String]) {
+
     // This sets the class for the simulation we want to run.
     val simClass = classOf[ShoppingCartSimulation1].getName
     val props = new GatlingPropertiesBuilder
     props.binariesDirectory("./target/scala-2.12/classes")
-    props.simulationClass(simClass)
-    Gatling.fromMap(props.build)
+      .simulationClass(simClass)
+
+    println(s"🛒🛒🛒 Testing Shopping cart 🛒🛒🛒")
+
+    val response = Gatling.fromMap(props.build)
+
+    if(response == 0)
+      println("Test completed successfully ✅")
+    else
+      println("Tests completed unsuccessfully ❌")
+
+    System.exit(response)
   }
 }
