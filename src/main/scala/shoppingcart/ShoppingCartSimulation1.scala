@@ -32,7 +32,7 @@ class ShoppingCartSimulation1 extends Simulation {
   val host = scala.util.Properties.envOrElse("GATLING_HOST", "localhost")
   val portString = scala.util.Properties.envOrElse("GATLING_PORT", "9000")
   val port = Try(portString.toInt).getOrElse(9000)
-  val numUsersString = scala.util.Properties.envOrElse("GATLING_NUM_USERS", "10")
+  val numUsersString = scala.util.Properties.envOrElse("GATLING_NUM_USERS", "1")
   val numUsers = Try(numUsersString.toInt).getOrElse(10)
 
   val grpcConf = grpc(ManagedChannelBuilder.forAddress(host, port).usePlaintext())

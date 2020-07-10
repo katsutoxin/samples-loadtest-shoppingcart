@@ -16,6 +16,8 @@ dockerExposedPorts in Docker := Seq.empty
 
 import com.typesafe.sbt.packager.docker._
 
+dockerUsername in Docker := Some("cloudstateio")
+
 dockerCommands ++= Seq(
   Cmd("User", "root"),
   ExecCmd("RUN", "mkdir", "-p", "/opt/docker/results"),
