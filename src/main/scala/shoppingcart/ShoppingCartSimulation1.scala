@@ -76,7 +76,10 @@ class ShoppingCartSimulation1 extends Simulation {
       )
     }
 
-  setUp(scn.inject(rampUsers(numUsers) during (30 seconds)).protocols(grpcConf))
+  setUp(scn.inject(rampUsers(numUsers) during (30 seconds)).protocols(grpcConf)).assertions(
+    global.responseTime.max.lt(50),
+    global.successfulRequests.percent.gte(100.0)
+  )
 }
 
 object ShoppingCartRunner {
@@ -93,6 +96,8 @@ object ShoppingCartRunner {
 
     if(noReports) props.noReports()
 
-    Gatling.fromMap(props.build)
+    val response = Gatling.fromMap(props.build)
+    println(s"exit with response code: $response")
+    System.exit(response)
   }
 }
