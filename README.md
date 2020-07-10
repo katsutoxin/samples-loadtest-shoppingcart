@@ -13,9 +13,9 @@ Using the Docker image (assumes you build the Docker image or use the public one
 
 Config notes:
 
-GATLING_HOST is the hostname your shopping cart service is running on
-GATLING_PORT is the port number of your cart service (default is 9000)
-GATLING_NUM_USERS is the number of users to simulate. They will be simulated in parallel and ramped up over 30 seconds
+* _GATLING_HOST_ is the hostname your shopping cart service is running on
+* _GATLING_PORT_ is the port number of your cart service (default is 9000)
+* _GATLING_NUM_USERS_ is the number of users to simulate. They will be simulated in parallel and ramped up over 30 seconds
 
 Using sbt:
 
