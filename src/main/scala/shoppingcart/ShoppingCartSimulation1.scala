@@ -34,6 +34,8 @@ class ShoppingCartSimulation1 extends Simulation {
   val port = Try(portString.toInt).getOrElse(9000)
   val numUsersString = scala.util.Properties.envOrElse("GATLING_NUM_USERS", "1")
   val numUsers = Try(numUsersString.toInt).getOrElse(10)
+  val numRepsString = scala.util.Properties.envOrElse("GATLING_NUM_REPS", "10")
+  val numReps = Try(numRepsString.toInt).getOrElse(10)
 
   val grpcConf = grpc(ManagedChannelBuilder.forAddress(host, port).usePlaintext())
   val userFeeder = RandomUsers.randomUserFeeder
@@ -42,7 +44,7 @@ class ShoppingCartSimulation1 extends Simulation {
 
   val scn = scenario("Adding items")
     .feed(userFeeder)
-    .repeat(10) {
+    .repeat(numReps) {
       feed(itemFeeder).
       exec(
         grpc("Add Item")
