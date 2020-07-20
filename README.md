@@ -11,24 +11,56 @@ Using the Docker image (assumes you build the Docker image or use the public one
 
 Run a smoke test
 
-Be sure to change GATLING_HOST and GATLING_PORT if you are not testing against a local Docker service...
+Be sure to change GATLING_HOST and GATLING_PORT to correctly target your service. Some examples:
 
-`docker run --rm --name shoppingcart-load-test --env JAVA_OPTS="-Dgatling.charting.noReports=true" -it --volume $PWD/results:/opt/docker/results --env GATLING_NUM_USERS=1 --env GATLING_NUM_REPS=10 --env GATLING_HOST=host.docker.internal cloudstateio/samples-loadtest-shoppingcart:0.1.0-SNAPSHOT`
+Targetting a Lightbend Cloudstate deployment:
 
-Config options:
+You service will need to be exposed using the `csctl svc expose` command. This gives you the hostname. The port will be 443. Additionally you need to ensure that SSL is enabled (the default is to communicate with the service in plaintext mode).
 
-* _GATLING_HOST_ is the hostname your shopping cart service is running on
-* _GATLING_PORT_ is the port number of your cart service (default is 9000)
-* _GATLING_NUM_USERS_ is the number of users to simulate. They will be simulated in parallel and ramped up over 30 seconds
-* _GATLING_NUM_REPS_ is the number of reps per user to simulate. Each user will add, remove and get the cart contents this number of times
+* GATLING_USE_SSL=true
+* GATLING_HOST=yourhostname.us-east1.apps.lbcs.dev
+* GATLING_PORT=443
+
+When running against a local service without an SSL gateway, or perhaps using the docker-compose config in the sample-ui-shoppingcart repository, you would configure this way.
+
+* GATLING_USE_SSL=false
+* GATLING_HOST=host.docker.internal
+* GATLING_PORT=9000
+
+```
+docker run --rm --name shoppingcart-load-test \
+   -it --volume $PWD/results:/opt/docker/results \
+   --env JAVA_OPTS="-Dgatling.charting.noReports=true" \
+   --env GATLING_NUM_USERS=1 \
+   --env GATLING_NUM_REPS=10 \
+   --env GATLING_HOST=host.docker.internal \
+   cloudstateio/samples-loadtest-shoppingcart:0.2.0-SNAPSHOT
+```
+
+All config options:
+
+* GATLING_HOST is the hostname your shopping cart service is running on
+* GATLING_PORT is the port number of your cart service (default is 9000)
+* GATLING_USE_SSL you need this if your service is behind an SSL gateway, otherwise the load test will use plaintext
+* GATLING_NUM_USERS is the number of users to simulate. They will be simulated in parallel and ramped up over 30 seconds (by default)
+* GATLING_NUM_REPS is the number of reps per user to simulate. Each user will add, remove and get the cart contents this number of times
+* GATLING_RAMP_UP_SECONDS is the number of seconds over which the users will be added to the load test (important when you have large numbers)
 
 # Running the shopping cart load test and gathering reports
 
-Run the load test:
+Run the load test as above but you need to also configure the JAVA_OPTS to enable reports. Don't forget to change the hostname example with the hostname you get when you expose your cart service.
 
-`docker run --rm --name shoppingcart-load-test --env JAVA_OPTS="-Dgatling.charting.noReports=false" -it --volume $PWD/results:/opt/docker/results --env GATLING_NUM_USERS=10 --env GATLING_NUM_REPS=10 --env GATLING_HOST=host.docker.internal cloudstateio/samples-loadtest-shoppingcart:0.1.0-SNAPSHOT`
-
-Note that you can greatly increase GATLING_NUM_REPS and GATLING_NUM_USERS which will make the load test take minutes instead of milliseconds to complete. Additionally set `noReports` to false, so we will now output a report in HTML format to display detailed data about the load test.
+```
+docker run --rm --name shoppingcart-load-test \
+  -it --volume $PWD/results:/opt/docker/results \
+  --env JAVA_OPTS="-Dgatling.charting.noReports=false" \
+  --env GATLING_NUM_USERS=100 \
+  --env GATLING_NUM_REPS=100 \
+  --env GATLING_HOST=dark-voice-4467.us-east1.apps.lbcs.dev \
+  --env GATLING_PORT=443 \
+  --env GATLING_USE_SSL=true \
+  cloudstateio/samples-loadtest-shoppingcart:0.2.0-SNAPSHOT
+```
 
 # Running with sbt
 
@@ -56,6 +88,7 @@ If you want to push to a different repository then add a custom `dockerRepositor
 
 ## References
 
+https://gatling.io/docs/current/
 https://github.com/gatling/gatling-sbt-plugin-demo
 https://github.com/phiSgr/gatling-grpc
 https://medium.com/@georgeleung_7777/a-demo-of-gatling-grpc-bc92158ca808
