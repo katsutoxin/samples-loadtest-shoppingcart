@@ -1,3 +1,5 @@
+version := "0.2.0-SNAPSHOT"
+
 enablePlugins(GatlingPlugin)
 enablePlugins(JavaAppPackaging)
 enablePlugins(DockerPlugin)

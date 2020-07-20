@@ -36,8 +36,16 @@ class ShoppingCartSimulation1 extends Simulation {
   val numUsers = Try(numUsersString.toInt).getOrElse(10)
   val numRepsString = scala.util.Properties.envOrElse("GATLING_NUM_REPS", "10")
   val numReps = Try(numRepsString.toInt).getOrElse(10)
+  val useSSLString = scala.util.Properties.envOrElse("GATLING_USE_SSL", "false")
+  val useSSL = Try(useSSLString.toBoolean).getOrElse(false)
+  val rampUpSecondsString = scala.util.Properties.envOrElse("GATLING_RAMP_UP_SECONDS", "30")
+  val rampUpSeconds = Try(rampUpSecondsString.toInt).getOrElse(30)
 
-  val grpcConf = grpc(ManagedChannelBuilder.forAddress(host, port).usePlaintext())
+  val grpcConf = if(useSSL)
+                  grpc(ManagedChannelBuilder.forAddress(host, port))
+                else
+                  grpc(ManagedChannelBuilder.forAddress(host, port).usePlaintext())
+
   val userFeeder = RandomUsers.randomUserFeeder
 
   val itemFeeder = csv("items.csv").eager.random
@@ -64,9 +72,6 @@ class ShoppingCartSimulation1 extends Simulation {
             ) yield GetShoppingCart(userId))
           .extract(_.items.headOption.map(_.productId))(item => item.saveAs("addedItem"))
       )
-      // .exec(session => {
-      //   println(s"Found product id ${session("addedItem").as[String]}")
-      //   session})
       .exec(
         grpc("RemoveItem")
           .rpc(ShoppingCartGrpc.METHOD_REMOVE_ITEM)
