@@ -11,9 +11,9 @@ Using the Docker image (assumes you build the Docker image or use the public one
 
 Run a smoke test
 
-Be sure to change GATLING_HOST and GATLING_PORT to correctly target your service. Some examples:
+Be sure to change GATLING_HOST and GATLING_PORT to correctly your service. Some examples:
 
-Targetting a Lightbend Cloudstate deployment:
+Targeting a Lightbend Cloudstate deployment:
 
 You service will need to be exposed using the `csctl svc expose` command. This gives you the hostname. The port will be 443. Additionally you need to ensure that SSL is enabled (the default is to communicate with the service in plaintext mode).
 
