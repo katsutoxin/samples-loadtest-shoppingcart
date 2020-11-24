@@ -5,6 +5,11 @@ Cloudstate shopping cart example smoketest/loadtest
 
 This project allows you to run a load test against the Cloudstate shopping cart example. A configurable number of users will make 30 requests each to the shopping cart service, adding items, getting the cart then removing items. For the test to pass all the requests must succeed within 3 seconds and none must fail.
 
+# Prerequisites
+
+* Get [Your Lightbend Cloudstate Account](https://docs.lbcs.io/gettingstarted/account.html)
+* Install [akkasls](https://docs.lbcs.io/getting-started/set-up-development-env.html)
+
 # Running the shopping cart smoke test
 
 Using the Docker image (assumes you build the Docker image or use the public one)
@@ -15,7 +20,7 @@ Be sure to change GATLING_HOST and GATLING_PORT to correctly your service. Some 
 
 Targeting a Lightbend Cloudstate deployment:
 
-You service will need to be exposed using the `csctl svc expose` command. This gives you the hostname. The port will be 443. Additionally you need to ensure that SSL is enabled (the default is to communicate with the service in plaintext mode).
+Your service will need to be exposed using the `akkasls svc expose` command. This gives you the hostname. The port will be 443. Additionally, you need to ensure that SSL is enabled (the default is to communicate with the service in plaintext mode).
 
 * GATLING_USE_SSL=true
 * GATLING_HOST=yourhostname.us-east1.apps.lbcs.dev
