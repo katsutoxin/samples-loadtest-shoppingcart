@@ -15,7 +15,7 @@ Be sure to change GATLING_HOST and GATLING_PORT to correctly your service. Some 
 
 Targeting a Lightbend Cloudstate deployment:
 
-You service will need to be exposed using the `csctl svc expose` command. This gives you the hostname. The port will be 443. Additionally you need to ensure that SSL is enabled (the default is to communicate with the service in plaintext mode).
+You service will need to be exposed using the `akkasls svc expose` command. This gives you the hostname. The port will be 443. Additionally you need to ensure that SSL is enabled (the default is to communicate with the service in plaintext mode).
 
 * GATLING_USE_SSL=true
 * GATLING_HOST=yourhostname.us-east1.apps.lbcs.dev
