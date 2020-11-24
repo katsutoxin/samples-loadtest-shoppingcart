@@ -5,6 +5,11 @@ Cloudstate shopping cart example smoketest/loadtest
 
 This project allows you to run a load test against the Cloudstate shopping cart example. A configurable number of users will make 30 requests each to the shopping cart service, adding items, getting the cart then removing items. For the test to pass all the requests must succeed within 3 seconds and none must fail.
 
+# Prerequisites
+
+* Get [Your Lightbend Cloudstate Account](https://docs.lbcs.io/gettingstarted/account.html)
+* Install [akkasls](https://docs.lbcs.io/getting-started/set-up-development-env.html)
+
 # Running the shopping cart smoke test
 
 Using the Docker image (assumes you build the Docker image or use the public one)
