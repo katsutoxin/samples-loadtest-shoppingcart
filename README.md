@@ -7,8 +7,8 @@ This project allows you to run a load test against the Cloudstate shopping cart 
 
 # Prerequisites
 
-* Get [Your Lightbend Cloudstate Account](https://docs.lbcs.io/gettingstarted/account.html)
-* Install [akkasls](https://docs.lbcs.io/getting-started/set-up-development-env.html)
+* Get [Your Lightbend Cloudstate Account](https://docs.cloudstate.com/getting-started/lightbend-account.html)
+* Install [akkasls](https://docs.cloudstate.com/getting-started/set-up-development-env.html)
 
 # Running the shopping cart smoke test
 
